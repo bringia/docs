@@ -1,33 +1,78 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'API da view do Cliente Digital na BringAI'
 ---
 
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+  Essa documentação foi criada para facilitar a integração entre o front-end e o back-end da plataforma BringAI. O foco principal aqui é a view do Cliente Digital, separando os endpoints por grupos e explicando o retorno esperado da API.
 </Note>
 
-## Welcome
+## Visão Geral
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+A **BringAI Digital Client API** permite que o usuário do tipo *cliente digital* gerencie os dados do seu próprio bot de inteligência artificial, visualize leads, conecte integrações (como a API oficial do WhatsApp) e acompanhe o histórico de conversas.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+Essa documentação serve como referência para o time de front-end, garantindo que todas as requisições sejam feitas corretamente com base nos retornos padronizados do backend.
 
-## Authentication
+Os endpoints estão organizados por grupo, e os da view digital começam sempre com `/digital`.  
+Exemplo: `/digital/bot`, `/digital/leads`.
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+## Estrutura da API
+
+- ✅ **RESTful**
+- ✅ **Versionamento:** `/v1/`
+- ✅ **Formato dos dados:** JSON
+- ✅ **Autenticação via Bearer Token** (obtido no login)
+
+## Autenticação
+
+A autenticação é feita via token do tipo **Bearer**, retornado no momento do login. Esse token deve ser incluído no cabeçalho (`Authorization`) de todas as requisições protegidas.
+
+Exemplo de resposta ao fazer login:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "success": true,
+  "message": "Token de acesso verificado com sucesso.",
+  "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6Imdp...",
+  "user": {
+    "id": "444e9bca-4a35-4a82-bc89-cb8d68ebf1fe",
+    "email": "patrick@erdeenterprise.com",
+    "role": "authenticated",
+    "email_verified": true,
+    "auth_time": 1753134603,
+    "expires_at": 1753138203
   }
-]
+}
 ```
+
+
+> ⚠️ O token expira em aproximadamente 1 hora.  
+> A aplicação front-end deve implementar uma verificação: caso uma requisição retorne erro `403 Forbidden`, o usuário deve ser automaticamente deslogado e redirecionado para a tela de login.
+
+## Possíveis erros no endpoint de login
+
+Esse endpoint poderá futuramente retornar erros como:
+
+- `401 Unauthorized`
+- `403 Forbidden`
+- `500 Internal Server Error`
+
+<Note>
+  No momento, os erros acima ainda <strong>não estão totalmente mapeados</strong>, mas serão incluídos em versões futuras da documentação.
+</Note>
+
+## Grupos de Endpoints
+
+Esta documentação está dividida em grupos, conforme o tipo de usuário ou funcionalidade:
+
+- `/digital`: Endpoints acessíveis pelos usuários do tipo <strong>cliente digital</strong>
+- `/imob`: Endpoints acessíveis pelos usuários do tipo <strong>cliente imobiliário </strong>
+- `/admin`: Endpoints para usuários administradores
+- `/auth`: Endpoints públicos, como login e registro
+
+<Callout type="info">
+  Todos os endpoints exigem o token retornado no login. Inclua-o no header da requisição da seguinte forma:
+</Callout>
+
+```http
+Authorization: Bearer <access_token>
