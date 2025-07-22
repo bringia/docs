@@ -1,4 +1,71 @@
 ---
-title: 'Create Plant'
-openapi: 'POST /plants'
+title: 'Login'
+openapi: 'POST /auth/login'
 ---
+
+Realiza a autenticação de um usuário do tipo **cliente digital** na plataforma BringAI.  
+Esse endpoint retorna um token JWT que deve ser utilizado nas requisições futuras, além das informações básicas do usuário autenticado.
+
+## Request Body
+
+```json
+{
+  "email": "patrick@erdeenterprise.com",
+  "password": "SenhaSegura123!"
+}
+```
+
+## Parâmetros
+
+| Campo    | Tipo   | Obrigatório | Descrição           |
+|----------|--------|-------------|----------------------|
+| email    | string | ✅           | E-mail do usuário    |
+| password | string | ✅           | Senha do usuário     |
+
+## Exemplo de requisição cURL
+
+```bash
+curl --request POST \
+  --url https://api.bringai.com/v1/auth/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "email": "patrick@erdeenterprise.com",
+    "password": "SenhaSegura123!"
+  }'
+```
+
+## Resposta de Sucesso
+
+```json
+{
+  "success": true,
+  "message": "Token de acesso verificado com sucesso.",
+  "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6Imdp...",
+  "user": {
+    "id": "444e9bca-4a35-4a82-bc89-cb8d68ebf1fe",
+    "email": "patrick@erdeenterprise.com",
+    "role": "authenticated",
+    "email_verified": true,
+    "auth_time": 1753134603,
+    "expires_at": 1753138203
+  }
+}
+```
+
+## Headers esperados nas próximas requisições
+
+```http
+Authorization: Bearer <access_token>
+```
+
+## Possíveis Erros
+
+| Status | Descrição                                 |
+|--------|--------------------------------------------|
+| 401    | Unauthorized – Credenciais inválidas       |
+| 403    | Forbidden – Token expirado ou inválido     |
+| 500    | Internal Server Error – Erro inesperado    |
+
+<Note>
+  Os erros acima ainda não estão todos implementados com retorno padronizado, mas essa documentação será atualizada conforme forem sendo adicionados.
+</Note>
