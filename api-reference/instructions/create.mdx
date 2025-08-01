@@ -1,5 +1,92 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+type: "POST"
+title: "Salvar Instruções"
+description: "Este endpoint permite adicionar uma nova instrução para o tipo de entidade especificado. A instrução pode ser para o vendedor, produto ativo ou follow-up."
 ---
 
+# Endpoint para Salvar Instruções
+
+Este endpoint permite salvar uma nova instrução no sistema da API Bring. A instrução será salva de acordo com o tipo de jornada especificado no parâmetro `journey`. Os tipos de instrução são os seguintes:
+
+- **1**: Instruções do Vendedor
+- **2**: Instruções para Produto Ativo
+- **3**: Instruções para Follow Up
+
+## Requisição (POST)
+
+```bash
+curl --location 'https://api.bringbr.ai/webhook/digital/instructions' \
+--header 'Content-Type: application/json' \
+--header 'access_token: <ACCESS_TOKEN>' \
+--data '{
+    "journey": 1,
+    "instructions": {
+      "instructions": "INSTRUÇÕES",
+      "restrictions": "RESTRIÇÕES",
+      "guys": "PESSOAL",
+      "voice": "VOZ",
+      "focus": "FOCO",
+      "steps": "ETAPAS",
+      "sales_script": "SCRIPT DE VENDAS",
+      "connector": "CONECTOR",
+      "payment": "PAGAMENTO",
+      "blacklist": "BLACKLIST",
+      "whitelist_people": "WHITELIST PESSOAS",
+      "blacklist_people": "BLACKLIST PESSOAS",
+      "url": "URL",
+      "behavior": "COMPORTAMENTO",
+      "prompt": "PROMPT"
+    }
+}'
+```
+
+## Parâmetros
+
+- **journey**: Define o tipo da instrução.
+  - **1**: Instruções do Vendedor
+  - **2**: Instruções para Produto Ativo
+  - **3**: Instruções para Follow Up
+- **instructions**: Um objeto contendo todos os parâmetros específicos da instrução, conforme descrito abaixo:
+  - **instructions**: Texto da instrução.
+  - **restrictions**: Restrições associadas à instrução.
+  - **guys**: Pessoa(s) relacionada(s) à instrução.
+  - **voice**: Definições de voz para a interação.
+  - **focus**: Foco da interação.
+  - **steps**: Etapas da interação ou processo.
+  - **sales_script**: Script de vendas associado.
+  - **connector**: Conector utilizado, se houver.
+  - **payment**: Instruções relacionadas ao pagamento.
+  - **blacklist**: Elementos ou usuários na blacklist.
+  - **whitelist_people**: Pessoas na whitelist.
+  - **blacklist_people**: Pessoas na blacklist.
+  - **url**: URL associada à instrução.
+  - **behavior**: Comportamento esperado.
+  - **prompt**: Prompt da instrução.
+
+## Exemplo de Resposta
+
+A resposta do servidor será um JSON confirmando a adição da instrução:
+
+```json
+{
+  "status": "success",
+  "message": "Instrução adicionada com sucesso"
+}
+```
+
+## Status de Erro
+
+Caso o envio do dado contenha algum erro, o servidor retornará uma mensagem detalhada sobre o que deu errado.
+
+```json
+{
+  "status": "error",
+  "message": "Erro ao adicionar instrução: campo 'instructions' é obrigatório"
+}
+```
+
+## Notas
+
+- **Atenção ao Token de Acesso**: Certifique-se de substituir `<ACCESS_TOKEN>` pelo seu token válido.
+- **Formato de Instrução**: A estrutura de cada campo da instrução deve ser preenchida de acordo com o tipo de jornada que está sendo usada.
+- **Autenticação**: O token de acesso é necessário para autenticação e deve ser incluído no cabeçalho da solicitação.
