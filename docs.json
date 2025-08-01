@@ -20,12 +20,20 @@
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "General",
             "pages": [
               "api-reference/endpoint/get",
               "api-reference/endpoint/create",
               "api-reference/endpoint/delete",
               "api-reference/endpoint/webhook"
+            ]
+          },
+          {
+            "group": "Instructions",
+            "pages": [
+              "api-reference/instructions/get",
+              "api-reference/instructions/create",
+              "api-reference/instructions/delete"
             ]
           }
         ]
